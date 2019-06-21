@@ -3,6 +3,7 @@ import { ScrollView, StyleSheet , Text } from 'react-native';
 import {ListItem, Button} from 'react-native-elements'
 import { FlatList } from 'react-native-gesture-handler';
 import Api from '../api/Api.js'
+import { tsOptionalType } from '@babel/types';
 
 class PedidosScreen extends Component{
   constructor(props){
@@ -53,14 +54,12 @@ class PedidosScreen extends Component{
                 renderItem={({ item }) => (
                    <ListItem
                   roundAvatar
-                  title={item.numeroPedido + ' ' + item.cliente.nombre}
+                  title={item.numeroPedido + ' - ' + item.cliente.nombre}
                   subtitle={item.estado}
-                  badge={{ value: item.items.length, textStyle: { color: 'orange' }, containerStyle: { marginTop: -20 } }}
-                  buttonGroup
-                  buttonGroupButtons = {['Yes', 'No']}
+                  badge={{ value: '$' + item.items.reduce((acc,item) => acc + item.cantidad * item.producto.precio,0).toString(), textStyle: { color: 'white' }, containerStyle: { marginTop: -20 } }}
                 /> 
                   )}
-                keyExtractor={item => toString(item.numeroPedido)}
+                keyExtractor={item => item.numeroPedido.toString()}
                 /> 
      </ScrollView>
     )

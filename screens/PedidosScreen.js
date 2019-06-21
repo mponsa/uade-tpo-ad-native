@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { ScrollView, StyleSheet , Text } from 'react-native';
+import {ListItem, Button} from 'react-native-elements'
 import { FlatList } from 'react-native-gesture-handler';
 import Api from '../api/Api.js'
 
@@ -21,7 +22,7 @@ class PedidosScreen extends Component{
         (result) => {
             this.setState({
                 isLoaded : true,
-                pedidos : result
+                pedidos : result.result
             });
         },
 
@@ -47,15 +48,20 @@ class PedidosScreen extends Component{
       <Text>Cargando...</Text>
      </ScrollView>
     :<ScrollView style={styles.container}>
-          <FlatList 
+            <FlatList 
                 data={this.state.pedidos}
-                renderItem={({ pedido }) => (
-                  <Text>{pedido.cliente}</Text>,
-                  <Text>{pedido.estado}</Text>)
-                }
-                keyExtractor={pedido => pedido.numero}
-                />
-          <Text>{this.state.pedidos.length}</Text>
+                renderItem={({ item }) => (
+                   <ListItem
+                  roundAvatar
+                  title={item.numeroPedido + ' ' + item.cliente.nombre}
+                  subtitle={item.estado}
+                  badge={{ value: item.items.length, textStyle: { color: 'orange' }, containerStyle: { marginTop: -20 } }}
+                  buttonGroup
+                  buttonGroupButtons = {['Yes', 'No']}
+                /> 
+                  )}
+                keyExtractor={item => toString(item.numeroPedido)}
+                /> 
      </ScrollView>
     )
   }

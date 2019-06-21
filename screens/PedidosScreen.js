@@ -3,7 +3,7 @@ import { ScrollView, StyleSheet , Text } from 'react-native';
 import {ListItem, Button} from 'react-native-elements'
 import { FlatList } from 'react-native-gesture-handler';
 import Api from '../api/Api.js'
-import { tsOptionalType } from '@babel/types';
+
 
 class PedidosScreen extends Component{
   constructor(props){

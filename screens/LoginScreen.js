@@ -4,8 +4,8 @@ import {
   Button,
   View,
 } from 'react-native';
-import Api from '../api/Api.js'
-import Login from '../components/Login.js'
+
+
 
 class LoginScreen extends React.Component {
     static navigationOptions = {

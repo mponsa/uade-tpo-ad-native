@@ -1,8 +1,9 @@
+//import liraries
 import React, { Component } from 'react';
 import { View, Text, Image, StyleSheet,KeyboardAvoidingView } from 'react-native';
 import LoginForm from './LoginForm';
 
-
+// create a component
 class Login extends Component {
     render() {
         return (
@@ -13,7 +14,7 @@ class Login extends Component {
                   
                     </View>
                <View style={styles.formContainer}>
-                   <LoginForm />
+                   <LoginForm press={this.props.press}/>
                </View>
                
          
@@ -22,11 +23,11 @@ class Login extends Component {
     }
 }
 
-
+// define your styles
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#2c3e50',
+        backgroundColor: '#fff',
     },
     loginContainer:{
         alignItems: 'center',
@@ -43,7 +44,8 @@ const styles = StyleSheet.create({
         marginTop: 120,
         width: 180,
         textAlign: 'center',
-        opacity: 0.9
+        opacity: 0.9,
+
     }
 });
 

@@ -4,6 +4,7 @@ import {
   Button,
   View,
 } from 'react-native';
+import Login from '../components/Login.js'
 
 
 
@@ -14,15 +15,14 @@ class LoginScreen extends React.Component {
   
     render() {
       return (
-        <View>
-          
-          <Button title="Sign in!" onPress={this._signInAsync} />
-        </View>
+        
+          <Login press={this._signInAsync}/>
+        
       );
     }
   
     _signInAsync = async () => {
-      await AsyncStorage.setItem('userToken', 'abc');
+      //await AsyncStorage.setItem('userToken', 'abc');
       this.props.navigation.navigate('Main');
     };
 }

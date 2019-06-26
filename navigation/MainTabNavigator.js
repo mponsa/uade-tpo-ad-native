@@ -9,6 +9,7 @@ import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import PedidosScreen from '../screens/PedidosScreen';
 import SettingsScreen from '../screens/SettingsScreen';
+import ClientesScreen from '../screens/ClientesScreen';
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -56,8 +57,24 @@ SettingsStack.navigationOptions = {
   ),
 };
 
+const ClientesStack = createStackNavigator({
+  Clientes: ClientesScreen,
+});
+
+ClientesStack.navigationOptions = {
+  tabBarLabel: 'Clientes',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'}
+    />
+  ),
+};
+
 export default createBottomTabNavigator({
   HomeStack,
   PedidosStack,
+  ClientesStack,
   SettingsStack,
+  
 });

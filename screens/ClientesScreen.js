@@ -54,7 +54,7 @@ class ClientesScreen extends Component{
                            <ListItem
                           roundAvatar
                           title={item.nombre}
-                          subtitle={item.numero}
+                          //subtitle={item.numero}
                           //badge={{ value: '$' + item.items.reduce((acc,item) => acc + item.cantidad * item.producto.precio,0).toString(), textStyle: { color: 'white' }, containerStyle: { marginTop: -20 } }}
                         /> 
                           )}

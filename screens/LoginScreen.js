@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  AsyncStorage,
-  Button,
-  View,
-} from 'react-native';
-import Login from '../components/Login.js'
+import Login from '../components/Login.js';
 
 
 
@@ -21,8 +16,9 @@ class LoginScreen extends React.Component {
       );
     }
   
+
+
     _signInAsync = async () => {
-      //await AsyncStorage.setItem('userToken', 'abc');
       this.props.navigation.navigate('Main');
     };
 }

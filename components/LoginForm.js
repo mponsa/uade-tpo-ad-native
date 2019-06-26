@@ -1,16 +1,43 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Alert, Button ,StyleSheet ,StatusBar} from 'react-native';
-
+import { View, Text, TextInput, TouchableOpacity,AsyncStorage, Alert, Button ,StyleSheet ,StatusBar} from 'react-native';
+import Api from '../api/Api.js';
+import axios from 'axios';
 
 
 
 // create a component
 class LoginForm extends Component {
-    
+    constructor(props){
+    super(props);
+    this.state = {
+        usuario: "",
+        password: ""
+      };
+    }
+
+
     onButtonPress = () => {
-        this.props.press();
+        try{
+            axios.post(Api.path + '/login',{
+            'usuario': this.state.usuario,
+            'password': this.state.password
+          }).then(response => {
+             if (response.data.errorCode === 0){
+                AsyncStorage.setItem('userToken', this.state.usuario);
+                this.props.press();
+
+              }else{
+              alert(response.data.clientMessage)
+             }  
+          })  
+        }
+        catch(e){
+          Alert.alert(e.message)
+        }
+        
     };
+
     
     render() {
         return (
@@ -20,16 +47,20 @@ class LoginForm extends Component {
                             autoCapitalize="none" 
                             onSubmitEditing={() => this.passwordInput.focus()} 
                             autoCorrect={false} 
-                            keyboardType='email-address' 
+                            keyboardType='email-address'
                             returnKeyType="next" 
                             placeholder='Usuario' 
-                            placeholderTextColor='black'/>
+                            placeholderTextColor='black'
+                            value={this.state.usuario}
+                            onChangeText={value=> this.setState({ usuario: value })}/>
 
                 <TextInput style = {styles.input}   
                            returnKeyType="go" ref={(input)=> this.passwordInput = input} 
                            placeholder='Password' 
                            placeholderTextColor='black' 
-                           secureTextEntry/>
+                           secureTextEntry
+                           value={this.state.password}
+                           onChangeText={value=> this.setState({ password: value })}/>
                  {/*   <Button onPress={onButtonPress} title = 'Login' style={styles.loginButton} /> */}
               <TouchableOpacity style={styles.buttonContainer} onPress={this.onButtonPress}>
                     <Text  style={styles.buttonText}>LOGIN</Text>

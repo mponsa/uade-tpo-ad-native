@@ -60,6 +60,7 @@ SettingsStack.navigationOptions = {
 
 const ClientesStack = createStackNavigator({
   Clientes: ClientesScreen,
+  PedidosCliente: PedidosScreen,
 });
 
 ClientesStack.navigationOptions = {

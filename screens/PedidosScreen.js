@@ -3,6 +3,7 @@ import { ScrollView, StyleSheet , Text } from 'react-native';
 import {ListItem, Button} from 'react-native-elements'
 import { FlatList } from 'react-native-gesture-handler';
 import axios from 'axios';
+
 import Api from '../api/Api.js'
 
 
@@ -14,36 +15,22 @@ class PedidosScreen extends Component{
         isLoaded : false,
         pedidos : [],
         filtered : '',
-        cliente: null, 
+        idCliente: this.props.navigation.getParam('idCliente', null) 
     };
   }  
 
-  // cargarPedidos(){
-  //   axios(Api.path + '/pedidos')
-  //   .then( response => response.json())
-  //   .then(
-  //       // Handle the result
-  //       (result) => {
-  //           this.setState({
-  //               isLoaded : true,
-  //               pedidos : result.result
-  //           });
-  //       },
-
-  //   )
-  // }
-
   cargarPedidos(){
-    this.state.cliente
-    ? axios.post(Api.path + '/pedidos/cliente',{'numero': this.props.cliente.numero})
+    alert( this.state.idCliente);
+    this.state.idCliente
+    ? axios.post(Api.path + '/pedidos/cliente',{'numero': this.props.idCliente})
         .then(response => {
           if(response.data.errorCode === 0){
             this.setState({
               isLoaded : true,
               pedidos : response.data.result
-          });
+          }); 
           }else{
-                  Alert.alert(response.data.clientMessage)
+                  alert(response.data.clientMessage)
           }
       })
     : axios.get(Api.path + '/pedidos')
@@ -60,7 +47,7 @@ class PedidosScreen extends Component{
 } 
 
   componentDidMount(){
-    this.setState({cliente:this.props.cliente})
+    this.setState({idCliente: this.props.navigation.getParam('idCliente', null)})
     this.cargarPedidos();
   }
 

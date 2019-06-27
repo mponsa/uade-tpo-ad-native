@@ -20,9 +20,8 @@ class PedidosScreen extends Component{
   }  
 
   cargarPedidos(){
-    alert( this.state.idCliente);
     this.state.idCliente
-    ? axios.post(Api.path + '/pedidos/cliente',{'numero': this.props.idCliente})
+    ? axios.post(Api.path + '/pedidos/cliente',{'numero': this.state.idCliente})
         .then(response => {
           if(response.data.errorCode === 0){
             this.setState({

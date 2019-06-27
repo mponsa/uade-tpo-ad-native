@@ -4,6 +4,7 @@ import {ListItem, Button, Icon} from 'react-native-elements'
 import { FlatList } from 'react-native-gesture-handler';
 import Api from '../api/Api.js'
 
+
 class ClientesScreen extends Component{
     constructor(props){
       super(props);
@@ -56,7 +57,7 @@ class ClientesScreen extends Component{
                     title={item.nombre}
                     subtitle={item.cuil}
                     leftAvatar={{ source: require('../assets/images/avatar.png') }}
-                    button onPress={() => {alert(item.cuil) }}
+                    button onPress={() => this.props.navigation.navigate('Pedidos', cliente = item)}
                   /> 
                 )}
                 keyExtractor={item => item.cuil}

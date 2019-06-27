@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { ScrollView, StyleSheet , Text } from 'react-native';
-import {ListItem, Button} from 'react-native-elements'
+import {ListItem, Button, Icon} from 'react-native-elements'
 import { FlatList } from 'react-native-gesture-handler';
 import Api from '../api/Api.js'
 
@@ -48,18 +48,19 @@ class ClientesScreen extends Component{
               <Text>Cargando...</Text>
              </ScrollView>
             :<ScrollView style={styles.container}>
-                    <FlatList 
-                        data={this.state.clientes}
-                        renderItem={({ item }) => (
-                           <ListItem
-                          roundAvatar
-                          title={item.nombre}
-                          //subtitle={item.numero}
-                          //badge={{ value: '$' + item.items.reduce((acc,item) => acc + item.cantidad * item.producto.precio,0).toString(), textStyle: { color: 'white' }, containerStyle: { marginTop: -20 } }}
-                        /> 
-                          )}
-                        keyExtractor={item => item.numero.toString()}
-                        /> 
+              <FlatList 
+                data={this.state.clientes}
+                renderItem={({ item }) => (
+                  <ListItem
+                    roundAvatar
+                    title={item.nombre}
+                    subtitle={item.cuil}
+                    leftAvatar={{ source: require('../assets/images/avatar.png') }}
+                    button onPress={() => {alert(item.cuil) }}
+                  /> 
+                )}
+                keyExtractor={item => item.cuil}
+              /> 
              </ScrollView>
             )
           }

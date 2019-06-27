@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { ScrollView, StyleSheet , Text } from 'react-native';
 import {ListItem, Button} from 'react-native-elements'
 import { FlatList } from 'react-native-gesture-handler';
+import axios from 'axios';
 import Api from '../api/Api.js'
 
 
@@ -11,26 +12,55 @@ class PedidosScreen extends Component{
     this.state = {
         error : null,
         isLoaded : false,
-        pedidos : [], 
+        pedidos : [],
+        filtered : '',
+        cliente: null, 
     };
   }  
 
-  cargarPedidos(){
-    fetch(Api.path + '/pedidos')
-    .then( response => response.json())
-    .then(
-        // Handle the result
-        (result) => {
-            this.setState({
-                isLoaded : true,
-                pedidos : result.result
-            });
-        },
+  // cargarPedidos(){
+  //   axios(Api.path + '/pedidos')
+  //   .then( response => response.json())
+  //   .then(
+  //       // Handle the result
+  //       (result) => {
+  //           this.setState({
+  //               isLoaded : true,
+  //               pedidos : result.result
+  //           });
+  //       },
 
-    )
-  }
+  //   )
+  // }
+
+  cargarPedidos(){
+    this.state.cliente
+    ? axios.post(Api.path + '/pedidos/cliente',{'numero': this.props.cliente.numero})
+        .then(response => {
+          if(response.data.errorCode === 0){
+            this.setState({
+              isLoaded : true,
+              pedidos : response.data.result
+          });
+          }else{
+                  Alert.alert(response.data.clientMessage)
+          }
+      })
+    : axios.get(Api.path + '/pedidos')
+    .then(response => {
+      if(response.data.errorCode === 0){
+        this.setState({
+          isLoaded : true,
+          pedidos : response.data.result
+      });
+      }else{
+              Alert.alert(response.data.clientMessage)
+      }
+  })
+} 
 
   componentDidMount(){
+    this.setState({cliente:this.props.cliente})
     this.cargarPedidos();
   }
 

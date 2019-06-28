@@ -3,7 +3,7 @@ import { ScrollView, StyleSheet , Text } from 'react-native';
 import {ListItem, Button} from 'react-native-elements'
 import { FlatList } from 'react-native-gesture-handler';
 import axios from 'axios';
-
+import {CirclesLoader, PulseLoader, TextLoader, DotsLoader} from 'react-native-indicator';
 import Api from '../api/Api.js'
 
 
@@ -61,8 +61,9 @@ class PedidosScreen extends Component{
 
     return(
     !this.state.isLoaded 
-    ?<ScrollView style={styles.container}>
-      <Text>Cargando...</Text>
+    ?<ScrollView >
+      <PulseLoader /> 
+            <TextLoader text="Loading" />
      </ScrollView>
     :<ScrollView style={styles.container}>
             <FlatList 
@@ -72,6 +73,7 @@ class PedidosScreen extends Component{
                   roundAvatar
                   title={item.numeroPedido + ' - ' + item.cliente.nombre}
                   subtitle={item.estado}
+                  //button onPress={() => this.props.navigation.navigate('Pedido', {idPedido: item.numeroPedido})}
                   badge={{ value: '$' + item.items.reduce((acc,item) => acc + item.cantidad * item.producto.precio,0).toString(), textStyle: { color: 'white' }, containerStyle: { marginTop: -20 } }}
                 /> 
                   )}

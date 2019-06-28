@@ -73,7 +73,7 @@ class PedidosScreen extends Component{
                   roundAvatar
                   title={item.numeroPedido + ' - ' + item.cliente.nombre}
                   subtitle={item.estado}
-                  //button onPress={() => this.props.navigation.navigate('Pedido', {idPedido: item.numeroPedido})}
+                  button onPress={() => this.props.navigation.navigate('Pedido', {idPedido: item.numeroPedido})}
                   badge={{ value: '$' + item.items.reduce((acc,item) => acc + item.cantidad * item.producto.precio,0).toString(), textStyle: { color: 'white' }, containerStyle: { marginTop: -20 } }}
                 /> 
                   )}

@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { ScrollView, StyleSheet , Text } from 'react-native';
 import {ListItem, FormLabel, FormInput, FormValidationMessage} from 'react-native-elements'
 import { FlatList } from 'react-native-gesture-handler';
+import {CirclesLoader, PulseLoader, TextLoader, DotsLoader} from 'react-native-indicator';
 import axios from 'axios';
 
 import Api from '../api/Api.js'
@@ -12,7 +13,7 @@ class PedidosScreen extends Component{
       this.state = {
           error : null,
           isLoaded : false,
-          pedidos : [],
+          pedido : null,
           filtered : '',
           idPedido: this.props.navigation.getParam('idPedido', null) 
       };
@@ -25,7 +26,7 @@ class PedidosScreen extends Component{
               if(response.data.errorCode === 0){
                 this.setState({
                   isLoaded : true,
-                  pedidos : response.data.result
+                  pedido : response.data.result
               }); 
               }else{
                       alert(response.data.clientMessage)
@@ -63,7 +64,8 @@ class PedidosScreen extends Component{
         return(
             !this.state.isLoaded 
             ?<ScrollView style={styles.container}>
-              <Text>Cargando...</Text>
+              <PulseLoader /> 
+                <TextLoader text="Loading" />
              </ScrollView>
             :<ScrollView style={styles.container}>
                     <FlatList 

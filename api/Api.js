@@ -1,4 +1,4 @@
 var api = {
-    path : 'http://192.168.43.110:8080/mywebserver'
+    path : 'http://10.0.2.2:8080/mywebserver'
 }
 export default api;

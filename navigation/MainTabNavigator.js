@@ -8,8 +8,10 @@ import {
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import PedidosScreen from '../screens/PedidosScreen';
-import SettingsScreen from '../screens/SettingsScreen';
+import SettingsScreen from '../screens/RubrosScreen';
 import ClientesScreen from '../screens/ClientesScreen';
+import RubrosScreen from '../screens/RubrosScreen';
+import SubRubrosScreen from '../screens/SubRubrosScreen';
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -38,28 +40,30 @@ PedidosStack.navigationOptions = {
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'}
+      name={Platform.OS === 'ios' ? 'ios-document' : 'md-document'}
     />
   ),
 };
 
 
-const SettingsStack = createStackNavigator({
-  Settings: SettingsScreen,
+const ProductosStack = createStackNavigator({
+  Rubro: RubrosScreen,
+  SRubro: SubRubrosScreen
 });
 
-SettingsStack.navigationOptions = {
-  tabBarLabel: 'Settings',
+ProductosStack.navigationOptions = {
+  tabBarLabel: 'Productos',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'}
+      name={Platform.OS === 'ios' ? 'ios-list-box' : 'md-list-box'}
     />
   ),
 };
 
 const ClientesStack = createStackNavigator({
   Clientes: ClientesScreen,
+  PedidosCliente: PedidosScreen,
 });
 
 ClientesStack.navigationOptions = {
@@ -76,6 +80,6 @@ export default createBottomTabNavigator({
   HomeStack,
   PedidosStack,
   ClientesStack,
-  SettingsStack,
+  ProductosStack,
   
 });

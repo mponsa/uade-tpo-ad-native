@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import { ScrollView, StyleSheet , Text } from 'react-native';
-import {ListItem, Button, Icon} from 'react-native-elements'
+import { ScrollView, StyleSheet , View } from 'react-native';
+import {ListItem} from 'react-native-elements';
+import {PulseLoader, TextLoader} from 'react-native-indicator';
 import { FlatList } from 'react-native-gesture-handler';
 import Api from '../api/Api.js'
 
@@ -41,13 +42,19 @@ class ClientesScreen extends Component{
             paddingTop: 30,
             backgroundColor: '#FFF',
           },
+          loading: {
+            flex: 1, 
+            alignItems: 'center',
+            justifyContent: 'center', 
+          }
         });
 
         return(
             !this.state.isLoaded 
-            ?<ScrollView style={styles.container}>
-              <Text>Cargando...</Text>
-             </ScrollView>
+            ?<View style={styles.loading}>
+              <PulseLoader /> 
+              <TextLoader text="Loading" />
+            </View>
             :<ScrollView style={styles.container}>
               <FlatList 
                 data={this.state.clientes}

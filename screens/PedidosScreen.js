@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
-import { ScrollView, StyleSheet , Text } from 'react-native';
-import {ListItem, Button} from 'react-native-elements'
+import { View, ScrollView, StyleSheet} from 'react-native';
+import {ListItem} from 'react-native-elements'
 import { FlatList } from 'react-native-gesture-handler';
 import axios from 'axios';
-import {CirclesLoader, PulseLoader, TextLoader, DotsLoader} from 'react-native-indicator';
+import {PulseLoader, TextLoader} from 'react-native-indicator';
 import Api from '../api/Api.js'
 
 
@@ -57,14 +57,19 @@ class PedidosScreen extends Component{
         paddingTop: 30,
         backgroundColor: '#FFF',
       },
+      loading: {
+        flex: 1, 
+        alignItems: 'center',
+        justifyContent: 'center', 
+        }
     });
 
     return(
     !this.state.isLoaded 
-    ?<ScrollView >
+    ?<View style={styles.loading}>
       <PulseLoader /> 
-            <TextLoader text="Loading" />
-     </ScrollView>
+      <TextLoader text="Loading" />
+     </View>
     :<ScrollView style={styles.container}>
             <FlatList 
                 data={this.state.pedidos}

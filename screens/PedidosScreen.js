@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { View, ScrollView, StyleSheet} from 'react-native';
+import { View, ScrollView, StyleSheet, TouchableOpacity, Text} from 'react-native';
 import {ListItem} from 'react-native-elements'
 import { FlatList } from 'react-native-gesture-handler';
 import axios from 'axios';
@@ -15,9 +15,9 @@ class PedidosScreen extends Component{
         isLoaded : false,
         pedidos : [],
         filtered : '',
-        idCliente: this.props.navigation.getParam('idCliente', null) 
+        idCliente: this.props.navigation.getParam('idCliente', null)
     };
-  }  
+  }
 
   cargarPedidos(){
     this.state.idCliente
@@ -27,7 +27,7 @@ class PedidosScreen extends Component{
             this.setState({
               isLoaded : true,
               pedidos : response.data.result
-          }); 
+          });
           }else{
                   alert(response.data.clientMessage)
           }
@@ -43,7 +43,7 @@ class PedidosScreen extends Component{
               Alert.alert(response.data.clientMessage)
       }
   })
-} 
+}
 
   componentDidMount(){
     this.setState({idCliente: this.props.navigation.getParam('idCliente', null)})
@@ -58,32 +58,38 @@ class PedidosScreen extends Component{
         backgroundColor: '#FFF',
       },
       loading: {
-        flex: 1, 
+        flex: 1,
         alignItems: 'center',
-        justifyContent: 'center', 
+        justifyContent: 'center',
         }
     });
 
     return(
-    !this.state.isLoaded 
+    !this.state.isLoaded
     ?<View style={styles.loading}>
-      <PulseLoader /> 
+      <PulseLoader />
       <TextLoader text="Loading" />
      </View>
     :<ScrollView style={styles.container}>
-            <FlatList 
+            <FlatList
                 data={this.state.pedidos}
                 renderItem={({ item }) => (
-                   <ListItem
-                  roundAvatar
-                  title={item.numeroPedido + ' - ' + item.cliente.nombre}
-                  subtitle={item.estado}
-                  button onPress={() => this.props.navigation.navigate('Pedido', {idPedido: item.numeroPedido})}
-                  badge={{ value: '$' + item.items.reduce((acc,item) => acc + item.cantidad * item.producto.precio,0).toString(), textStyle: { color: 'white' }, containerStyle: { marginTop: -20 } }}
-                /> 
-                  )}
+                    <ListItem
+                      roundAvatar
+                      title={item.numeroPedido + ' - ' + item.cliente.nombre}
+                      subtitle={item.estado}
+                      button onPress={() => this.props.navigation.navigate('Pedido', {idPedido: item.numeroPedido})}
+                      badge={{ value: '$' + item.items.reduce((acc,item) => acc + item.cantidad * item.producto.precio,0).toString(), textStyle: { color: 'white' }, containerStyle: { marginTop: -20 } }}
+                    />
+                )}
                 keyExtractor={item => item.numeroPedido.toString()}
-                /> 
+            />
+
+            // Boton
+            <TouchableOpacity onPress={() => alert('FAB clicked')} style={styles.fab}>
+                <Text style={styles.fabIcon}>+</Text>
+            </TouchableOpacity>
+
      </ScrollView>
     )
   }
@@ -95,4 +101,21 @@ PedidosScreen.navigationOptions = {
   title: 'Pedidos',
 };
 
-
+const styles = StyleSheet.create({
+  fab: {
+    position: 'absolute',
+    width: 56,
+    height: 56,
+    alignItems: 'center',
+    justifyContent: 'center',
+    right: 20,
+    bottom: 20,
+    backgroundColor: '#03A9F4',
+    borderRadius: 30,
+    elevation: 8
+  },
+  fabIcon: {
+    fontSize: 40,
+    color: 'white'
+  }
+});

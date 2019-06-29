@@ -8,10 +8,10 @@ import {
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import PedidosScreen from '../screens/PedidosScreen';
-import SettingsScreen from '../screens/RubrosScreen';
 import ClientesScreen from '../screens/ClientesScreen';
 import RubrosScreen from '../screens/RubrosScreen';
 import SubRubrosScreen from '../screens/SubRubrosScreen';
+import ProductosScreen from '../screens/ProductosScreen';
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -48,7 +48,8 @@ PedidosStack.navigationOptions = {
 
 const ProductosStack = createStackNavigator({
   Rubro: RubrosScreen,
-  SRubro: SubRubrosScreen
+  SRubro: SubRubrosScreen,
+  Productos: ProductosScreen,
 });
 
 ProductosStack.navigationOptions = {

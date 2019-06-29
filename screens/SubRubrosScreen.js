@@ -17,19 +17,22 @@ class SubRubrosScreen extends Component{
 
 
   cargarSubRubros = () => {
-    try{
-      axios.get(Api.path + '/subrubros').then(response => {
-          if(response.data.errorCode === 0){
-                //Filtrar sub rubros.
-                this.setState({subrubros : response.data.result,
-                               isLoaded : true})
-          }else{
-              alert(response.data.clientMessage)
-          }
-      })
-  }catch(e){
-      alert(e.message)
-  }
+    fetch(Api.path + '/subrubros')
+    .then( response => response.json())
+    .then(
+        // Handle the result
+        (result) => {
+            var filter = this.props.navigation.getParam('descRubro',null);
+            var filteredsubrubros = result.result.filter(function(subrubro){
+              return !subrubro.rubro.descripcion.indexOf(filter)
+            });
+            this.setState({
+                isLoaded : true,
+                subrubros : filteredsubrubros
+            });
+        },
+
+    )
   }
 
   componentDidMount = () => {
@@ -52,13 +55,12 @@ class SubRubrosScreen extends Component{
              </ScrollView>
             :<ScrollView style={styles.container}>
               <FlatList 
-                data={this.state.subRubros}
+                data={this.state.subrubros}
                 renderItem={({ item }) => (
                   <ListItem
                     roundAvatar
                     title={item.codigo + ' - ' + item.descripcion}
-                    //button onPress={() => this.props.navigation.navigate('PedidosCliente', {idCliente: item.numero})}
-                    //button onPress={() => alert(item.numero)}
+                    button onPress={() => this.props.navigation.navigate('Productos', {subRubroId: item.codigo})}
                   /> 
                 )}
                 keyExtractor={item => item.codigo.toString()}

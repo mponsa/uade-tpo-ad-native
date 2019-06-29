@@ -16,12 +16,13 @@ class ProductosScreen extends Component{
         productos: []
 
     };
+    this.refreshFunction = this.refreshFunction.bind(this);
   }  
 
   async cargarProductos(){
     try{
         await axios.post(Api.path + '/productosSubRubro',{
-            codigo: this.props.navigation.getParam('subRubroId',null)
+            codigo: this.props.navigation.getParam('subRubro',null).codigo
         }).then(response => {
             if (response.data.errorCode === 0){
                 this.setState({productos : response.data.result,
@@ -34,6 +35,11 @@ class ProductosScreen extends Component{
         alert(e.message)
     }
 
+  }
+
+  refreshFunction(){
+      this.setState({isLoaded:false})
+      this.cargarProductos();
   }
 
 
@@ -87,13 +93,16 @@ class ProductosScreen extends Component{
                   roundAvatar
                   title={item.nombre}
                   subtitle={item.marca}
-                  //button onPress={() => this.props.navigation.navigate('Pedido', {idPedido: item.numeroPedido})}
+                  button onPress={() => this.props.navigation.navigate('Producto', {producto: item})}
                   badge={{ value: '$' + item.precio.toString(), textStyle: { color: 'white' }, containerStyle: { marginTop: -20 } }}
                 /> 
                   )}
                 keyExtractor={item => item.codigoBarras.toString()}
                 />
-         <TouchableOpacity onPress={() => alert('FAB clicked')} style={styles.fab}>
+         <TouchableOpacity onPress={() => this.props.navigation.navigate('Producto',{rubro : this.props.navigation.getParam('rubro',null),
+                                                                          subRubro : this.props.navigation.getParam('subRubro',null),
+                                                                          refresh: this.refreshFunction
+        })} style={styles.fab}>
              <Text style={styles.fabIcon}>+</Text>
          </TouchableOpacity> 
      </View>

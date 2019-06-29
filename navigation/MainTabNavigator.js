@@ -12,6 +12,7 @@ import ClientesScreen from '../screens/ClientesScreen';
 import RubrosScreen from '../screens/RubrosScreen';
 import SubRubrosScreen from '../screens/SubRubrosScreen';
 import ProductosScreen from '../screens/ProductosScreen';
+import ProductoScreen from '../screens/ProductoScreen';
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -50,6 +51,7 @@ const ProductosStack = createStackNavigator({
   Rubro: RubrosScreen,
   SRubro: SubRubrosScreen,
   Productos: ProductosScreen,
+  Producto: ProductoScreen,
 });
 
 ProductosStack.navigationOptions = {

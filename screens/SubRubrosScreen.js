@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import { ScrollView, StyleSheet , Text } from 'react-native';
-import {ListItem, Button} from 'react-native-elements'
+import { ScrollView, StyleSheet , View } from 'react-native';
+import {ListItem} from 'react-native-elements';
+import {PulseLoader, TextLoader} from 'react-native-indicator';
 import { FlatList } from 'react-native-gesture-handler';
 import axios from 'axios';
 import Api from '../api/Api.js'
@@ -16,13 +17,37 @@ class SubRubrosScreen extends Component{
   }  
 
 
-  cargarSubRubros = () => {
+   cargarSubRubros(){
+    
+    // try{
+    //   await axios.get(Api.path + '/subrubros')
+    //   .then(response => response.json()).then((response) => {
+    //     if (response.data.errorCode  === 0){
+    //         var filter = this.props.navigation.getParam('descRubro',null);
+    //         var filteredsubrubros = result.result.filter(function(subrubro){
+    //           return !subrubro.rubro.descripcion.indexOf(filter)
+    //         });
+    //         this.setState({
+    //             isLoaded : true,
+    //             subrubros : filteredsubrubros
+    //         });
+    //     }
+    //     else{
+    //       alert(response.data.clientMessage)
+    //     }
+    //   })
+    // }catch(e){
+    //   alert(e.clientMessage)
+    // }
+    
+    
+    
     fetch(Api.path + '/subrubros')
     .then( response => response.json())
     .then(
         // Handle the result
         (result) => {
-            var filter = this.props.navigation.getParam('descRubro',null);
+            var filter = this.props.navigation.getParam('rubro',null).descripcion;
             var filteredsubrubros = result.result.filter(function(subrubro){
               return !subrubro.rubro.descripcion.indexOf(filter)
             });
@@ -46,13 +71,19 @@ class SubRubrosScreen extends Component{
         paddingTop: 30,
         backgroundColor: '#FFF',
       },
+      loading: {
+        flex: 1, 
+        alignItems: 'center',
+        justifyContent: 'center', 
+        },
     });
 
     return(
             !this.state.isLoaded 
-            ?<ScrollView style={styles.container}>
-              <Text>Cargando...</Text>
-             </ScrollView>
+            ?<View style={styles.loading}>
+              <PulseLoader /> 
+              <TextLoader text="Loading" />
+            </View>
             :<ScrollView style={styles.container}>
               <FlatList 
                 data={this.state.subrubros}
@@ -60,7 +91,7 @@ class SubRubrosScreen extends Component{
                   <ListItem
                     roundAvatar
                     title={item.codigo + ' - ' + item.descripcion}
-                    button onPress={() => this.props.navigation.navigate('Productos', {subRubroId: item.codigo})}
+                    button onPress={() => this.props.navigation.navigate('Productos', {subRubro: item, rubro: item.rubro})}
                   /> 
                 )}
                 keyExtractor={item => item.codigo.toString()}

@@ -63,7 +63,7 @@ class RubrosScreen extends Component{
                   <ListItem
                     roundAvatar
                     title={item.codigo + ' - ' + item.descripcion}
-                    button onPress={() => this.props.navigation.navigate('SRubro', {idRubro: item.codigo})}
+                    button onPress={() => this.props.navigation.navigate('SRubro', {rubro: item})}
                     //button onPress={() => alert(item.numero)}
                   /> 
                 )}

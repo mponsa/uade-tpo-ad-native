@@ -64,8 +64,7 @@ class ClientesScreen extends Component{
                     title={item.nombre}
                     subtitle={item.cuil}
                     leftAvatar={{ source: require('../assets/images/avatar.png') }}
-                    button onPress={() => this.props.navigation.navigate('PedidosCliente', {idCliente: item.numero})}
-                    //button onPress={() => alert(item.numero)}
+                    button onPress={() => this.props.navigation.navigate('PedidosCliente', {cliente: item})}
                   /> 
                 )}
                 keyExtractor={item => item.cuil}

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { View, ScrollView, StyleSheet} from 'react-native';
+import { View, ScrollView, StyleSheet,TouchableOpacity,Text} from 'react-native';
 import {ListItem} from 'react-native-elements'
 import { FlatList } from 'react-native-gesture-handler';
 import axios from 'axios';
@@ -14,14 +14,15 @@ class PedidosScreen extends Component{
         error : null,
         isLoaded : false,
         pedidos : [],
-        filtered : '',
-        idCliente: this.props.navigation.getParam('idCliente', null) 
+        cliente: this.props.navigation.getParam('cliente', null),
+        sending: false 
     };
+    this.refreshFunction = this.refreshFunction.bind(this);
+    this.crearPedido = this.crearPedido.bind(this);
   }  
 
   cargarPedidos(){
-    this.state.idCliente
-    ? axios.post(Api.path + '/pedidos/cliente',{'numero': this.state.idCliente})
+    axios.post(Api.path + '/pedidos/cliente',{'numero': this.state.cliente.numero})
         .then(response => {
           if(response.data.errorCode === 0){
             this.setState({
@@ -29,26 +30,47 @@ class PedidosScreen extends Component{
               pedidos : response.data.result
           }); 
           }else{
+                  this.setState({isLoaded: true})
                   alert(response.data.clientMessage)
           }
       })
-    : axios.get(Api.path + '/pedidos')
-    .then(response => {
-      if(response.data.errorCode === 0){
-        this.setState({
-          isLoaded : true,
-          pedidos : response.data.result
-      });
-      }else{
-              Alert.alert(response.data.clientMessage)
+  }
+
+  crearPedido(){
+      try{
+          this.setState({sending:true})
+          axios.post(Api.path + '/crearPedido',{
+                'cliente': this.state.cliente
+          }).then(response => {
+              if(response.data.errorCode === 0){
+                this.props.navigation.navigate('Pedido', {pedido: response.data.result , refresh: this.refreshFunction})
+                this.cargarPedidos()
+              }else{
+                  alert(response.data.clientMessage)
+              }
+          })
+      }catch(e){
+        alert(e.message)
       }
-  })
-} 
+  }
 
   componentDidMount(){
-    this.setState({idCliente: this.props.navigation.getParam('idCliente', null)})
     this.cargarPedidos();
   }
+
+  refreshFunction(){
+    this.setState({isLoaded:false});
+    this.cargarPedidos();
+}
+
+
+verPedido(item){
+  if(item.estado == 'facturado'){
+    alert("El pedido no puede modificarse");
+  }else{
+    this.props.navigation.navigate('Pedido',{pedido: item, refresh: this.refreshFunction});
+  }
+}
 
   render (){
     const styles = StyleSheet.create({
@@ -61,7 +83,25 @@ class PedidosScreen extends Component{
         flex: 1, 
         alignItems: 'center',
         justifyContent: 'center', 
-        }
+        },
+        fab: { 
+          position: 'absolute', 
+          width: 56, 
+          height: 56, 
+          alignItems: 'center', 
+          justifyContent: 'center', 
+          right: 20, 
+          bottom: 20, 
+          backgroundColor: '#03A9F4', 
+          borderRadius: 30, 
+          elevation: 8 
+          }, 
+    fabIcon: { 
+            fontSize: 40, 
+            color: 'white' 
+          },
+      
+
     });
 
     return(
@@ -70,7 +110,7 @@ class PedidosScreen extends Component{
       <PulseLoader /> 
       <TextLoader text="Loading" />
      </View>
-    :<ScrollView style={styles.container}>
+    :<View style={styles.container}>
             <FlatList 
                 data={this.state.pedidos}
                 renderItem={({ item }) => (
@@ -78,13 +118,18 @@ class PedidosScreen extends Component{
                   roundAvatar
                   title={item.numeroPedido + ' - ' + item.cliente.nombre}
                   subtitle={item.estado}
-                  button onPress={() => this.props.navigation.navigate('Pedido', {idPedido: item.numeroPedido})}
+                  button onPress={() => this.verPedido(item)}
                   badge={{ value: '$' + item.items.reduce((acc,item) => acc + item.cantidad * item.producto.precio,0).toString(), textStyle: { color: 'white' }, containerStyle: { marginTop: -20 } }}
                 /> 
                   )}
                 keyExtractor={item => item.numeroPedido.toString()}
                 /> 
-     </ScrollView>
+      <TouchableOpacity onPress={this.crearPedido}
+       style={styles.fab}>
+      <Text style={styles.fabIcon}>+</Text>
+      </TouchableOpacity>
+     </View>
+ 
     )
   }
 

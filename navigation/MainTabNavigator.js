@@ -13,6 +13,7 @@ import RubrosScreen from '../screens/RubrosScreen';
 import SubRubrosScreen from '../screens/SubRubrosScreen';
 import ProductosScreen from '../screens/ProductosScreen';
 import ProductoScreen from '../screens/ProductoScreen';
+import PedidoScreen from '../screens/PedidoScreen';
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -31,21 +32,6 @@ HomeStack.navigationOptions = {
     />
   ),
 };
-
-const PedidosStack = createStackNavigator({
-  Pedidos: PedidosScreen,
-});
-
-PedidosStack.navigationOptions = {
-  tabBarLabel: 'Pedidos',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-document' : 'md-document'}
-    />
-  ),
-};
-
 
 const ProductosStack = createStackNavigator({
   Rubro: RubrosScreen,
@@ -67,6 +53,7 @@ ProductosStack.navigationOptions = {
 const ClientesStack = createStackNavigator({
   Clientes: ClientesScreen,
   PedidosCliente: PedidosScreen,
+  Pedido: PedidoScreen,
 });
 
 ClientesStack.navigationOptions = {
@@ -81,7 +68,6 @@ ClientesStack.navigationOptions = {
 
 export default createBottomTabNavigator({
   HomeStack,
-  PedidosStack,
   ClientesStack,
   ProductosStack,
   

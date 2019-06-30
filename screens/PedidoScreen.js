@@ -1,55 +1,45 @@
 import React, {Component} from 'react';
-import { ScrollView, StyleSheet , Text } from 'react-native';
-import {ListItem, FormLabel, FormInput, FormValidationMessage} from 'react-native-elements'
-import { FlatList } from 'react-native-gesture-handler';
-import {CirclesLoader, PulseLoader, TextLoader, DotsLoader} from 'react-native-indicator';
+import { StyleSheet,View,} from 'react-native';
+import {PulseLoader, TextLoader} from 'react-native-indicator';
 import axios from 'axios';
-
 import Api from '../api/Api.js'
+import Pedido from '../components/Pedido.js'
 
-class PedidosScreen extends Component{
+class PedidoScreen extends Component{
     constructor(props){
       super(props);
       this.state = {
           error : null,
           isLoaded : false,
-          pedido : null,
-          filtered : '',
-          idPedido: this.props.navigation.getParam('idPedido', null) 
+          pedido: this.props.navigation.getParam('pedido'),
+          cliente: this.props.navigation.getParam('cliente')
       };
     }  
 
-    cargarPedido(){
-        this.state.idPedido
-        ? axios.post(Api.path + '/pedido',{'numero': this.state.idPedido})
-            .then(response => {
-              if(response.data.errorCode === 0){
-                this.setState({
-                  isLoaded : true,
-                  pedido : response.data.result
-              }); 
-              }else{
-                      alert(response.data.clientMessage)
-              }
-          })
-        : axios.get(Api.path + '/pedidos')
-        .then(response => {
-          if(response.data.errorCode === 0){
-            this.setState({
-              isLoaded : true,
-              pedidos : response.data.result
-          });
-          }else{
-                  Alert.alert(response.data.clientMessage)
-          }
-      })
+    async actualizarPedido(){
+      try{
+        await axios.get(Api.path + `/pedido?numero=${this.props.match.params.id}`).then(response =>{
+            if(response.data.errorCode === 0){
+                this.setState({pedido : response.data.result,
+                               isLoaded: true})
+            }else{
+                alert(response.data.clientMessage)
+            }
+        })
+    }
+    catch(e){
+        alert(e.message)
+    }
     } 
 
 
     componentDidMount(){
-        this.setState({idPedido: this.props.navigation.getParam('idPedido', null)})
-        this.cargarPedido();
+      if( this.state.producto != null ) { 
+        this.setState({isLoaded:true})
+      }else{
+          this.setState({isLoaded:true})
       }
+    }
 
 
       render (){
@@ -58,36 +48,30 @@ class PedidosScreen extends Component{
             flex: 1,
             paddingTop: 30,
             backgroundColor: '#FFF',
-          },
+          },loading: {
+            flex: 1, 
+            alignItems: 'center',
+            justifyContent: 'center', 
+          }
+
         });
 
         return(
-            !this.state.isLoaded 
-            ?<ScrollView style={styles.container}>
-              <PulseLoader /> 
-                <TextLoader text="Loading" />
-             </ScrollView>
-            :<ScrollView style={styles.container}>
-                    <FlatList 
-                        data={this.state.pedido}
-                        renderItem={({ item }) => (
-                           <ListItem
-                          roundAvatar
-                          title={item.numeroPedido + ' - ' + item.cliente.nombre}
-                          subtitle={item.estado}
-                          //button onPress={() => this.props.navigation.navigate('Pedido', {idPedido: item.numeroPedido})}
-                          //badge={{ value: '$' + item.items.reduce((acc,item) => acc + item.cantidad * item.producto.precio,0).toString(), textStyle: { color: 'white' }, containerStyle: { marginTop: -20 } }}
-                        /> 
-                          )}
-                        keyExtractor={item => item.numeroPedido.toString()}
-                        /> 
-             </ScrollView>
-            )
-          }
+          !this.state.isLoaded 
+          ?<View style={styles.loading}>
+            <PulseLoader /> 
+            <TextLoader text="Loading" />
+           </View>
+          :
+           <View style={styles.container}>
+               <Pedido pedido={this.state.pedido} navigation = {this.props.navigation} refresh = {this.props.navigation.getParam('refresh')}/>
+           </View>
+          )
+        }
 
 }
 export default PedidoScreen;
 
-PedidosScreen.navigationOptions = {
+PedidoScreen.navigationOptions = {
   title: 'Pedido',
 };

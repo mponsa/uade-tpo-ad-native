@@ -4,7 +4,7 @@ import Api from '../api/Api.js';
 import axios from 'axios';
 
 
-class NuevoProductoForm extends Component {
+class Producto extends Component {
     constructor(props){
     super(props);
     this.state = {
@@ -104,7 +104,7 @@ class NuevoProductoForm extends Component {
                 <StatusBar barStyle="light-content"/>
                 <TextInput style = {styles.input} 
                             autoCapitalize="none" 
-                            editable = {this.state.producto ? true : false}
+                            editable = {this.state.producto ? false : true}
                             onSubmitEditing={() => this.marcaInput.focus()} 
                             autoCorrect={false} 
                             keyboardType='default'
@@ -115,7 +115,7 @@ class NuevoProductoForm extends Component {
                             onChangeText={value=> this.setState({ nombre: value })}/>
                 <TextInput style = {styles.input} 
                             autoCapitalize="none" 
-                            editable = {this.state.producto ? true : false}
+                            editable = {this.state.producto ? false : true}
                             ref={(input)=>this.marcaInput = input}
                             onSubmitEditing={() => this.precioInput.focus()} 
                             autoCorrect={false} 
@@ -146,7 +146,7 @@ class NuevoProductoForm extends Component {
                             onChangeText={value=> this.setState({ precio:  value ? Number.parseInt(value) : 0})}/>
                 <TextInput  style = {styles.input} 
                             autoCapitalize="none"
-                            editable = {this.state.producto ? true : false} 
+                            editable = {this.state.producto ? false : true}
                             ref={(input)=>this.codigoBarrasInput = input}
                             autoCorrect={false} 
                             keyboardType='default'
@@ -221,4 +221,4 @@ const styles = StyleSheet.create({
 
    
 });
-export default NuevoProductoForm;
+export default Producto;

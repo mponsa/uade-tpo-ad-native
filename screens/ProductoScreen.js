@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
-import { View, ScrollView, StyleSheet,TouchableOpacity, Text} from 'react-native';
+import { View, StyleSheet} from 'react-native';
 import axios from 'axios';
 import {PulseLoader, TextLoader} from 'react-native-indicator';
 import Api from '../api/Api.js'
-import NuevoProductoForm from '../components/NuevoProducto.js';
-import { thisExpression } from '@babel/types';
+import Producto from '../components/Producto.js'; 
 
 
 
@@ -76,10 +75,10 @@ class ProductoScreen extends Component{
     :
      this.state.producto
      ?<View style={styles.container}>
-         <NuevoProductoForm producto={this.state.producto} navigation = {this.props.navigation} refresh = {this.props.navigation.getParam('refresh')}/>
+         <Producto producto={this.state.producto} navigation = {this.props.navigation} refresh = {this.props.navigation.getParam('refresh')}/>
      </View>
      :<View style={styles.container}>
-         <NuevoProductoForm rubro = {this.state.rubro} subRubro = {this.state.subRubro} navigation = {this.props.navigation} refresh = {this.props.navigation.getParam('refresh')}/>
+         <Producto rubro = {this.state.rubro} subRubro = {this.state.subRubro} navigation = {this.props.navigation} refresh = {this.props.navigation.getParam('refresh')}/>
      </View>
 
     

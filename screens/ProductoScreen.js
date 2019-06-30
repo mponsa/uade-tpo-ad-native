@@ -76,7 +76,7 @@ class ProductoScreen extends Component{
     :
      this.state.producto
      ?<View style={styles.container}>
-         <Text> Producto {this.state.producto.nombre} cargado ! </Text>
+         <NuevoProductoForm producto={this.state.producto} navigation = {this.props.navigation} refresh = {this.props.navigation.getParam('refresh')}/>
      </View>
      :<View style={styles.container}>
          <NuevoProductoForm rubro = {this.state.rubro} subRubro = {this.state.subRubro} navigation = {this.props.navigation} refresh = {this.props.navigation.getParam('refresh')}/>

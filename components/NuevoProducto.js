@@ -8,12 +8,14 @@ class NuevoProductoForm extends Component {
     constructor(props){
     super(props);
     this.state = {
-        nombre: "",
-        marca: "",
-        rubro: this.props.rubro,
-        subRubro: this.props.subRubro,
-        codigoBarras: "",
-        precio: 0,
+        nombre: this.props.producto ? this.props.producto.nombre : "",
+        marca: this.props.producto ? this.props.producto.marca : "",
+        rubro: this.props.producto ? this.props.producto.rubro : this.props.rubro,
+        subRubro: this.props.producto ? this.props.producto.subRubro : this.props.subRubro,
+        codigoBarras: this.props.producto ? this.props.producto.codigoBarras : "",
+        identificador: this.props.producto ? this.props.producto.identificador : "",
+        precio: this.props.producto ? this.props.producto.precio : 0,
+        producto: this.props.producto ? true : false,
         sending: false,
       };
     }
@@ -21,10 +23,12 @@ class NuevoProductoForm extends Component {
 
 
     onButtonPress = () => {
+        
         if(!this.state.sending){ //Se valida que no estemos llamando a la API.
             if(this.validarForm()){ //Se valida que estén correctos los campos.
                     try{
                         this.setState({sending:true})
+                        if(!this.props.producto){
                         axios.post(Api.path + '/altaProducto',{
                         'subRubro': this.state.subRubro,
                         'rubro': this.state.rubro,
@@ -37,20 +41,44 @@ class NuevoProductoForm extends Component {
                         alert(response.data.clientMessage);
                         this.props.refresh();
                         this.props.navigation.navigate('Productos');
-                    })  
+                    })
+                    }else{
+                        axios.post(Api.path + '/modificarProducto',{
+                            'identificador' : this.state.identificador,
+                            'subRubro': this.state.subRubro,
+                            'rubro': this.state.rubro,
+                            'nombre': this.state.nombre,
+                            'marca': this.state.marca,
+                            'codigoBarras': this.state.codigoBarras,
+                            'precio': this.state.precio
+                        }).then(response => {
+                            this.setState({sending:false});
+                            alert(response.data.clientMessage);
+                            this.props.refresh();
+                            this.props.navigation.navigate('Productos');
+                        })
+                    }  
                     }
                     catch(e){
                     Alert.alert(e.message)
                     }
             } 
             else{
-                alert("El precio debe ser mayor a 0 y el codigo de barras tener una longitud de 13 caracteres.")
+                if(!this.state.producto){
+                    alert("El precio debe ser mayor a 0 y el codigo de barras tener una longitud de 13 caracteres.")
+                }else{
+                    alert("El precio debe ser mayor a 0")
+                }
             }
         }
     };
 
     validarForm(){
         return this.state.precio > 0 && this.state.codigoBarras.length == 13
+    }
+
+    eliminarProducto(){
+        alert("eliminado");
     }
 
     
@@ -60,6 +88,7 @@ class NuevoProductoForm extends Component {
                 <StatusBar barStyle="light-content"/>
                 <TextInput style = {styles.input} 
                             autoCapitalize="none" 
+                            editable = {this.state.producto ? true : false}
                             onSubmitEditing={() => this.marcaInput.focus()} 
                             autoCorrect={false} 
                             keyboardType='default'
@@ -70,6 +99,7 @@ class NuevoProductoForm extends Component {
                             onChangeText={value=> this.setState({ nombre: value })}/>
                 <TextInput style = {styles.input} 
                             autoCapitalize="none" 
+                            editable = {this.state.producto ? true : false}
                             ref={(input)=>this.marcaInput = input}
                             onSubmitEditing={() => this.precioInput.focus()} 
                             autoCorrect={false} 
@@ -97,9 +127,10 @@ class NuevoProductoForm extends Component {
                             placeholder='Precio' 
                             placeholderTextColor='black'
                             value={this.state.precio.toString()}
-                            onChangeText={value=> this.setState({ precio:  Number.parseInt(value)})}/>
+                            onChangeText={value=> this.setState({ precio:  value ? Number.parseInt(value) : 0})}/>
                 <TextInput  style = {styles.input} 
-                            autoCapitalize="none" 
+                            autoCapitalize="none"
+                            editable = {this.state.producto ? true : false} 
                             ref={(input)=>this.codigoBarrasInput = input}
                             autoCorrect={false} 
                             keyboardType='default'
@@ -108,14 +139,29 @@ class NuevoProductoForm extends Component {
                             placeholderTextColor='black'
                             value={this.state.codigoBarras}
                             onChangeText={value=> this.setState({ codigoBarras: value })}/>
-                
-                
-              <TouchableOpacity style={styles.buttonContainer} onPress={this.onButtonPress} activeOpacity={this.validarForm() ? 1 : 0.5}>
+             
+               <TouchableOpacity style={styles.buttonContainer} onPress={this.onButtonPress}>
                     <Text  style={styles.buttonText}>Guardar</Text>
-              </TouchableOpacity> 
+               </TouchableOpacity>
+               <EliminarButton parent={this}/>
             </View>
         );
     }
+}
+
+class EliminarButton extends Component{
+    render(){
+        return(
+            this.props.parent.state.producto
+            ? <TouchableOpacity style={styles.buttonContainerAlert} onPress={this.props.parent.eliminarProducto}>
+                     <Text  style={styles.buttonText}>Eliminar</Text>
+              </TouchableOpacity>
+            :
+             <View>
+
+             </View>
+        )
+    }    
 }
 
 // define your styles
@@ -141,7 +187,14 @@ const styles = StyleSheet.create({
     },
     buttonContainer:{
         backgroundColor: '#2980b6',
-        paddingVertical: 15,
+        padding: 15,
+        marginBottom: 15,
+        borderRadius: 10
+    },
+    buttonContainerAlert:{
+        backgroundColor: '#de1738',
+        padding: 15,
+        marginBottom: 15,
         borderRadius: 10
     },
     buttonText:{

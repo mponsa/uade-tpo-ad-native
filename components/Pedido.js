@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { View, Text, TextInput, TouchableOpacity,AsyncStorage, Alert, Button ,StyleSheet ,StatusBar} from 'react-native';
 import Api from '../api/Api.js';
 import axios from 'axios';
+import {ListItem} from 'react-native-elements';
+import { ScrollView, FlatList } from 'react-native-gesture-handler';
 
 
 class Pedido extends Component {
@@ -69,7 +71,20 @@ class Pedido extends Component {
                  <TextInput style = {styles.input} 
                             value={'Estado: ' + this.state.estado}
                             editable={false}
-                            /> 
+                            />
+                <View>
+                        <FlatList 
+                        data={this.state.items}
+                        renderItem={({ item }) => (
+                        <ListItem
+                        roundAvatar
+                        title={item.producto.nombre + ' x' + item.cantidad}
+                        subtitle={'$' - (item.producto.precio * item.cantidad).toString()}
+                        /> 
+                        )}
+                        keyExtractor={item => item.producto.identificador.toString()}
+                        /> 
+                </View>
                <TouchableOpacity style={styles.buttonContainer} onPress={this.onButtonPress}>
                     <Text  style={styles.buttonText}>Agregar items..</Text>
                </TouchableOpacity>

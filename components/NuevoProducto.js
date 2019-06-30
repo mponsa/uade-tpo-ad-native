@@ -18,6 +18,7 @@ class NuevoProductoForm extends Component {
         producto: this.props.producto ? true : false,
         sending: false,
       };
+    this.eliminarProducto = this.eliminarProducto.bind(this);
     }
 
 
@@ -78,7 +79,22 @@ class NuevoProductoForm extends Component {
     }
 
     eliminarProducto(){
-        alert("eliminado");
+        try{
+            this.setState({sending:true})
+            axios.post(Api.path + '/bajaProducto',{
+                identificador : this.state.identificador
+            }).then(response => {
+                if(response.data.errorCode === 0){
+                    this.setState({sending:false})
+                    alert(response.data.clientMessage);
+                    this.props.refresh();
+                    this.props.navigation.navigate('Productos');
+                }
+            })
+        }
+        catch(e){
+            alert(e.message);
+        }
     }
 
     

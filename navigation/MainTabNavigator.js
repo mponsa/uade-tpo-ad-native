@@ -14,6 +14,8 @@ import SubRubrosScreen from '../screens/SubRubrosScreen';
 import ProductosScreen from '../screens/ProductosScreen';
 import ProductoScreen from '../screens/ProductoScreen';
 import PedidoScreen from '../screens/PedidoScreen';
+import SettingsScreen from '../screens/SettingsScreen';
+import ChangePasswordScreen from '../screens/ChangePasswordScreen';
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -66,9 +68,26 @@ ClientesStack.navigationOptions = {
   ),
 };
 
+const SettingsStack = createStackNavigator({
+  Settings: SettingsScreen,
+  ChangePassword: ChangePasswordScreen,
+});
+
+SettingsStack.navigationOptions = {
+  tabBarLabel: 'Configuración',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === 'ios' ? 'md-settings' : 'md-settings'}
+    />
+  ),
+};
+
+
+
 export default createBottomTabNavigator({
   HomeStack,
   ClientesStack,
   ProductosStack,
-  
+  SettingsStack,
 });

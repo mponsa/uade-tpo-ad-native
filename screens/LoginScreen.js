@@ -5,7 +5,7 @@ import Login from '../components/Login.js';
 
 class LoginScreen extends React.Component {
     static navigationOptions = {
-      title: 'Please sign in',
+      title: 'Ingreso',
     };
   
     render() {

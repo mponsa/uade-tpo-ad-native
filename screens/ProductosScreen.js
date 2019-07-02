@@ -126,7 +126,7 @@ class ProductosScreen extends Component{
                       roundAvatar
                       title={item.nombre}
                       subtitle={item.marca}
-                      button onPress={this.onPressItem(item)}
+                      button onPress={() => this.onPressItem(item)}
                       badge={{ value: '$' + item.precio.toString(), textStyle: { color: 'white' }, containerStyle: { marginTop: -20 } }}
                   />
                 )}

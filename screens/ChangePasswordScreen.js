@@ -111,14 +111,9 @@ const styles = StyleSheet.create({
         borderRadius: 10
     },
     buttonContainer:{
-        position: 'absolute', 
-        alignItems: 'center', 
-        justifyContent: 'center', 
-        bottom: -400,
-        right: 5, 
-        backgroundColor: '#03A9F4', 
-        borderRadius: 10,
-        padding: 15
+        backgroundColor: '#2980b6',
+        paddingVertical: 15,
+        borderRadius: 10
     },
     buttonText:{
         color: '#fff',

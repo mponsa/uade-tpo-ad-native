@@ -17,37 +17,13 @@ class SubRubrosScreen extends Component{
   }  
 
 
-   cargarSubRubros(){
+   cargarSubRubros = async () => {
     
-    // try{
-    //   await axios.get(Api.path + '/subrubros')
-    //   .then(response => response.json()).then((response) => {
-    //     if (response.data.errorCode  === 0){
-    //         var filter = this.props.navigation.getParam('descRubro',null);
-    //         var filteredsubrubros = result.result.filter(function(subrubro){
-    //           return !subrubro.rubro.descripcion.indexOf(filter)
-    //         });
-    //         this.setState({
-    //             isLoaded : true,
-    //             subrubros : filteredsubrubros
-    //         });
-    //     }
-    //     else{
-    //       alert(response.data.clientMessage)
-    //     }
-    //   })
-    // }catch(e){
-    //   alert(e.clientMessage)
-    // }
-    
-    
-    
-    fetch(Api.path + '/subrubros')
-    .then( response => response.json())
-    .then(
-        // Handle the result
-        (result) => {
-            var filter = this.props.navigation.getParam('rubro',null).descripcion;
+    try{
+      await axios.get(Api.path + '/subrubros')
+      .then((response) => {
+        if (response.data.errorCode  === 0){
+            var filter = this.props.navigation.getParam('descRubro',null);
             var filteredsubrubros = result.result.filter(function(subrubro){
               return !subrubro.rubro.descripcion.indexOf(filter)
             });
@@ -55,9 +31,33 @@ class SubRubrosScreen extends Component{
                 isLoaded : true,
                 subrubros : filteredsubrubros
             });
-        },
+        }
+        else{
+          alert(response.data.clientMessage)
+        }
+      })
+    }catch(e){
+      alert(e.clientMessage)
+    }
+    
+    
+    
+    // fetch(Api.path + '/subrubros')
+    // .then( response => response.json())
+    // .then(
+    //     // Handle the result
+    //     (result) => {
+    //         var filter = this.props.navigation.getParam('rubro',null).descripcion;
+    //         var filteredsubrubros = result.result.filter(function(subrubro){
+    //           return !subrubro.rubro.descripcion.indexOf(filter)
+    //         });
+    //         this.setState({
+    //             isLoaded : true,
+    //             subrubros : filteredsubrubros
+    //         });
+    //     },
 
-    )
+    // )
   }
 
   componentDidMount = () => {

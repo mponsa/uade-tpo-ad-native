@@ -4,6 +4,8 @@ import {ListItem} from 'react-native-elements';
 import {PulseLoader, TextLoader} from 'react-native-indicator';
 import { FlatList } from 'react-native-gesture-handler';
 import Api from '../api/Api.js'
+import axios from 'axios';
+import { tsImportEqualsDeclaration } from '@babel/types';
 
 
 class ClientesScreen extends Component{
@@ -16,19 +18,34 @@ class ClientesScreen extends Component{
       };
     } 
 
-    cargarClientes(){
-        fetch(Api.path + '/clientes')
-        .then( response => response.json())
-        .then(
-            // Handle the result
-            (result) => {
-                this.setState({
-                    isLoaded : true,
-                    clientes : result.result
-                });
-            },
+    cargarClientes = async () => {
+        // fetch(Api.path + '/clientes')
+        // .then( response => response.json())
+        // .then(
+        //     // Handle the result
+        //     (result) => {
+        //         this.setState({
+        //             isLoaded : true,
+        //             clientes : result.result
+        //         });
+        //     },
     
-        )
+        // )
+
+        try {
+          await axios.get(Api.path + '/clientes').then(response =>{
+              if (response.data.errorCode === 0){
+                  this.setState({
+                      isLoaded : true,
+                      clientes : response.data.result})
+                 }else{
+                      alert(response.data.clientMessage)
+                }
+          })
+        }
+        catch(e) {
+            alert(e);
+        }
       }
 
       componentDidMount(){

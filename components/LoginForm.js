@@ -25,7 +25,6 @@ class LoginForm extends Component {
           }).then(response => {
              if (response.data.errorCode === 0){
                 AsyncStorage.setItem('userToken', this.state.usuario);
-                alert(AsyncStorage.getItem('userToken').value)
                 this.props.press();
 
               }else{

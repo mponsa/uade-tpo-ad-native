@@ -4,33 +4,30 @@ import Api from '../api/Api.js';
 import axios from 'axios';
 import {ListItem} from 'react-native-elements';
 import { ScrollView, FlatList } from 'react-native-gesture-handler';
+import PedidosScreen from '../screens/PedidosScreen.js';
 
 
 class Pedido extends Component {
     constructor(props){
-    super(props);
-    this.state = {
-        numeroPedido: this.props.pedido.numeroPedido,
-        cliente: this.props.pedido.cliente,
-        fechaPedido: (new Date(this.props.pedido.fechaPedido)).getDate() + '/' +
-                     ((new Date(this.props.pedido.fechaPedido)).getMonth() + 1) + '/' +
-                     (new Date(this.props.pedido.fechaPedido)).getFullYear(),
-        estado: this.props.pedido.estado,
-        items: this.props.pedido.items,
-        pedido: this.props.pedido,
-        sending: false,
-      };
-    this.eliminarPedido = this.eliminarPedido.bind(this);
+        super(props);
+        this.state = {
+            numeroPedido: this.props.pedido.numeroPedido,
+            cliente: this.props.pedido.cliente,
+            fechaPedido: (new Date(this.props.pedido.fechaPedido)).getDate() + '/' +
+                         ((new Date(this.props.pedido.fechaPedido)).getMonth() + 1) + '/' +
+                         (new Date(this.props.pedido.fechaPedido)).getFullYear(),
+            estado: this.props.pedido.estado,
+            items: this.props.pedido.items,
+            pedido: this.props.pedido,
+            refreshPedido: this.props.refreshPedido,
+            sending: false,
+            producto:'',
+            cantidad:'',
+            addItem: false
+          };
+        this.eliminarPedido = this.eliminarPedido.bind(this);
     }
 
-
-
-    onButtonPress = () => {
-        
-        if(!this.state.sending){ //Se valida que no estemos llamando a la API.
-                alert("Boton apretadoo!")
-        }
-    };
 
     eliminarPedido(){
         try{
@@ -41,7 +38,7 @@ class Pedido extends Component {
                 if(response.data.errorCode === 0){
                     this.setState({sending:false})
                     alert(response.data.clientMessage);
-                    this.props.refresh();
+                    this.props.refresh();//Refresca la pantalla de pedidos.
                     this.props.navigation.navigate('PedidosCliente', {cliente: this.state.cliente});
                 }
             })
@@ -51,45 +48,53 @@ class Pedido extends Component {
         }
     }
 
-    
+
+    addItems(){
+            this.props.navigation.navigate('Rubro', {addItem: true, pedido: this.state.pedido, refreshPedido: this.state.refreshPedido})
+    }
+
+
     render() {
+        const {navigate} = this.props.navigation;
         return (
             <View style={styles.container}>
                 <StatusBar barStyle="light-content"/>
-                <TextInput style = {styles.input} 
+                <TextInput style = {styles.input}
                             value={'Número de pedido: ' + this.state.numeroPedido}
                             editable={false}
                             />
-                <TextInput style = {styles.input} 
+                <TextInput style = {styles.input}
                             value={'Cliente: ' + this.state.cliente.nombre}
                             editable={false}
                             />
-                <TextInput style = {styles.input} 
+                <TextInput style = {styles.input}
                             value={'Fecha: ' + this.state.fechaPedido}
                             editable={false}
                             />
-                 <TextInput style = {styles.input} 
+                 <TextInput style = {styles.input}
                             value={'Estado: ' + this.state.estado}
                             editable={false}
                             />
                 <View>
-                        <FlatList 
+                    <FlatList
                         data={this.state.items}
                         renderItem={({ item }) => (
-                        <ListItem
-                        roundAvatar
-                        title={item.producto.nombre + ' x' + item.cantidad}
-                        subtitle={'$' - (item.producto.precio * item.cantidad).toString()}
-                        /> 
+                            <ListItem
+                                roundAvatar
+                                title={item.producto.nombre + ' x' + item.cantidad}
+                                subtitle={'$' - (item.producto.precio * item.cantidad).toString()}
+                            />
                         )}
                         keyExtractor={item => item.producto.identificador.toString()}
-                        /> 
+                    />
                 </View>
-               <TouchableOpacity style={styles.buttonContainer} onPress={this.onButtonPress}>
-                    <Text  style={styles.buttonText}>Agregar items..</Text>
+               <TouchableOpacity style={styles.buttonContainer} onPress={this.addItems}>
+                    <Text style={styles.buttonText}>Agregar items..</Text>
+
                </TouchableOpacity>
+
                <TouchableOpacity style={styles.buttonContainerAlert} onPress={this.eliminarPedido}>
-                     <Text  style={styles.buttonText}>Eliminar</Text>
+                     <Text style={styles.buttonText}>Eliminar</Text>
               </TouchableOpacity>
             </View>
         );
@@ -98,7 +103,7 @@ class Pedido extends Component {
 
 
 
-// define your styles
+
 const styles = StyleSheet.create({
     container: {
      padding: 20
@@ -135,8 +140,8 @@ const styles = StyleSheet.create({
         color: '#fff',
         textAlign: 'center',
         fontWeight: '700'
-    }, 
+    },
 
-   
+
 });
 export default Pedido;

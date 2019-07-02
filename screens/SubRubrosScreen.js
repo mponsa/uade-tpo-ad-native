@@ -12,13 +12,16 @@ class SubRubrosScreen extends Component{
     super(props);
     this.state = {
       isLoaded: false,
-      subrubros: []
+      subrubros: [],
+      addItem : this.props.navigation.getParam('addItem'),
+      pedido: this.props.navigation.getParam('pedido'),
+      refreshPedido: this.props.navigation.getParam('refreshPedido')
     };
-  }  
+  }
 
 
    cargarSubRubros(){
-    
+
     // try{
     //   await axios.get(Api.path + '/subrubros')
     //   .then(response => response.json()).then((response) => {
@@ -39,9 +42,9 @@ class SubRubrosScreen extends Component{
     // }catch(e){
     //   alert(e.clientMessage)
     // }
-    
-    
-    
+
+
+
     fetch(Api.path + '/subrubros')
     .then( response => response.json())
     .then(
@@ -72,30 +75,30 @@ class SubRubrosScreen extends Component{
         backgroundColor: '#FFF',
       },
       loading: {
-        flex: 1, 
+        flex: 1,
         alignItems: 'center',
-        justifyContent: 'center', 
+        justifyContent: 'center',
         },
     });
 
     return(
-            !this.state.isLoaded 
+            !this.state.isLoaded
             ?<View style={styles.loading}>
-              <PulseLoader /> 
+              <PulseLoader />
               <TextLoader text="Loading" />
             </View>
             :<ScrollView style={styles.container}>
-              <FlatList 
+              <FlatList
                 data={this.state.subrubros}
                 renderItem={({ item }) => (
                   <ListItem
                     roundAvatar
                     title={item.codigo + ' - ' + item.descripcion}
-                    button onPress={() => this.props.navigation.navigate('Productos', {subRubro: item, rubro: item.rubro})}
-                  /> 
+                    button onPress={() => this.props.navigation.navigate('Productos', {subRubro: item, rubro: item.rubro, addItem: this.state.addItem, pedido: this.state.pedido, refreshPedido: this.state.refreshPedido})}
+                  />
                 )}
                 keyExtractor={item => item.codigo.toString()}
-              /> 
+              />
              </ScrollView>
     )
   }
@@ -106,5 +109,3 @@ export default SubRubrosScreen;
 SubRubrosScreen.navigationOptions = {
   title: 'Seleccione un sub-rubro..',
 };
-
-

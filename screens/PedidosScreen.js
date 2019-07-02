@@ -61,7 +61,7 @@ class PedidosScreen extends Component{
   refreshFunction(){
     this.setState({isLoaded:false});
     this.cargarPedidos();
-}
+  }
 
 
 verPedido(item){
@@ -105,30 +105,29 @@ verPedido(item){
     });
 
     return(
-    !this.state.isLoaded
-    ?<View style={styles.loading}>
-      <PulseLoader />
-      <TextLoader text="Loading" />
-     </View>
-    :<View style={styles.container}>
-            <FlatList
-                data={this.state.pedidos}
-                renderItem={({ item }) => (
-                   <ListItem
-                  roundAvatar
-                  title={item.numeroPedido + ' - ' + item.cliente.nombre}
-                  subtitle={item.estado}
-                  button onPress={() => this.verPedido(item)}
-                  badge={{ value: '$' + item.items.reduce((acc,item) => acc + item.cantidad * item.producto.precio,0).toString(), textStyle: { color: 'white' }, containerStyle: { marginTop: -20 } }}
-                />
+      !this.state.isLoaded
+      ? <View style={styles.loading}>
+          <PulseLoader />
+          <TextLoader text="Loading" />
+        </View>
+      : <View style={styles.container}>
+              <FlatList
+                  data={this.state.pedidos}
+                  renderItem={({ item }) => (
+                      <ListItem
+                          roundAvatar
+                          title={item.numeroPedido + ' - ' + item.cliente.nombre}
+                          subtitle={item.estado}
+                          button onPress={() => this.verPedido(item)}
+                          badge={{ value: '$' + item.items.reduce((acc,item) => acc + item.cantidad * item.producto.precio,0).toString(), textStyle: { color: 'white' }, containerStyle: { marginTop: -20 } }}
+                      />
                   )}
-                keyExtractor={item => item.numeroPedido.toString()}
-                />
-      <TouchableOpacity onPress={this.crearPedido}
-       style={styles.fab}>
-      <Text style={styles.fabIcon}>+</Text>
-      </TouchableOpacity>
-     </View>
+                  keyExtractor={item => item.numeroPedido.toString()}
+              />
+              <TouchableOpacity onPress={this.crearPedido} style={styles.fab}>
+                  <Text style={styles.fabIcon}>+</Text>
+              </TouchableOpacity>
+       </View>
 
     )
   }

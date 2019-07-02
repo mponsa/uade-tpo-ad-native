@@ -4,22 +4,9 @@ import {ListItem} from 'react-native-elements';
 import {PulseLoader, TextLoader} from 'react-native-indicator';
 import { FlatList } from 'react-native-gesture-handler';
 import Api from '../api/Api.js'
-import {createStackNavigator, createBottomTabNavigator} from 'react-navigation';
-import PedidosScreen from '../screens/PedidosScreen';
-import PedidoScreen from '../screens/PedidoScreen';
-import RubrosScreen from '../screens/RubrosScreen';
-import SubRubrosScreen from '../screens/SubRubrosScreen';
-import ProductosScreen from '../screens/ProductosScreen';
-import ProductoScreen from '../screens/ProductoScreen';
 
 
-const ClientesStack = createStackNavigator({
-  PedidosCliente: PedidosScreen,
-  Pedido: PedidoScreen,
-  Rubro: RubrosScreen,
-  SRubro: SubRubrosScreen,
-  Productos: ProductosScreen,
-});
+
 
 class ClientesScreen extends Component{
     constructor(props){

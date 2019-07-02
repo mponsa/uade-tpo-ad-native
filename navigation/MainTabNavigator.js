@@ -1,7 +1,7 @@
 import React from 'react';
 import { Platform } from 'react-native';
 import {
-  createStackNavigator, 
+  createStackNavigator,
   createBottomTabNavigator,
 } from 'react-navigation';
 
@@ -56,6 +56,9 @@ const ClientesStack = createStackNavigator({
   Clientes: ClientesScreen,
   PedidosCliente: PedidosScreen,
   Pedido: PedidoScreen,
+  Rubro: RubrosScreen,
+  SRubro: SubRubrosScreen,
+  Productos: ProductosScreen,
 });
 
 ClientesStack.navigationOptions = {

@@ -133,14 +133,14 @@ class ProductosScreen extends Component{
                 keyExtractor={item => item.codigoBarras.toString()}
         />
 
-        <Prompt
+        {/*<Prompt
            title="Cantidad"
            placeholder=""
            defaultValue="1"
            visible={this.state.promptVisible}
            onCancel={() => this.setState( {promptVisible: false} )}
            onSubmit={this.onSubmit(value)}
-        />
+        />*/}
 
         <TouchableOpacity onPress={() => this.props.navigation.navigate('Producto',{rubro : this.props.navigation.getParam('rubro',null),
                                                                           subRubro : this.props.navigation.getParam('subRubro',null),

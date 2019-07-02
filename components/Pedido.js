@@ -27,6 +27,7 @@ class Pedido extends Component {
           };
         this.eliminarPedido = this.eliminarPedido.bind(this);
         this.addItems = this.addItems.bind(this);
+        this.facturarPedido = this.facturarPedido.bind(this);
     }
 
 
@@ -34,6 +35,25 @@ class Pedido extends Component {
         try{
             this.setState({sending:true})
             axios.post(Api.path + '/eliminarPedido',{
+                numeroPedido : this.state.numeroPedido
+            }).then(response => {
+                if(response.data.errorCode === 0){
+                    this.setState({sending:false})
+                    alert(response.data.clientMessage);
+                    this.props.refresh();//Refresca la pantalla de pedidos.
+                    this.props.navigation.navigate('PedidosCliente', {cliente: this.state.cliente});
+                }
+            })
+        }
+        catch(e){
+            alert(e.message);
+        }
+    }
+
+    facturarPedido(){
+        try{
+            this.setState({sending:true})
+            axios.post(Api.path + '/facturarPedido',{
                 numeroPedido : this.state.numeroPedido
             }).then(response => {
                 if(response.data.errorCode === 0){
@@ -89,8 +109,13 @@ class Pedido extends Component {
                         keyExtractor={item => item.producto.identificador.toString()}
                     />
                 </View>
-               <TouchableOpacity style={styles.buttonContainer} onPress={this.addItems}>
+                <TouchableOpacity style={styles.buttonContainer} onPress={this.addItems}>
                     <Text style={styles.buttonText}>Agregar items..</Text>
+
+               </TouchableOpacity>
+               
+               <TouchableOpacity style={styles.buttonContainer} onPress={this.facturarPedido}>
+                    <Text style={styles.buttonText}>Facturar</Text>
 
                </TouchableOpacity>
 

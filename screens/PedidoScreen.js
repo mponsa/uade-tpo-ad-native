@@ -14,7 +14,8 @@ class PedidoScreen extends Component{
           pedido: this.props.navigation.getParam('pedido'),
           cliente: this.props.navigation.getParam('cliente')
       };
-    }  
+      this.refreshPedido = this.refreshPedido.bind(this);
+    }
 
     async actualizarPedido(){
       try{
@@ -30,11 +31,15 @@ class PedidoScreen extends Component{
     catch(e){
         alert(e.message)
     }
-    } 
+    }
 
+    refreshPedido(){
+      this.setState({isLoaded:false});
+      this.actualizarPedido();
+    }
 
     componentDidMount(){
-      if( this.state.producto != null ) { 
+      if( this.state.producto != null ) {
         this.setState({isLoaded:true})
       }else{
           this.setState({isLoaded:true})
@@ -49,22 +54,22 @@ class PedidoScreen extends Component{
             paddingTop: 30,
             backgroundColor: '#FFF',
           },loading: {
-            flex: 1, 
+            flex: 1,
             alignItems: 'center',
-            justifyContent: 'center', 
+            justifyContent: 'center',
           }
 
         });
 
         return(
-          !this.state.isLoaded 
+          !this.state.isLoaded
           ?<View style={styles.loading}>
-            <PulseLoader /> 
+            <PulseLoader />
             <TextLoader text="Loading" />
            </View>
           :
            <View style={styles.container}>
-               <Pedido pedido={this.state.pedido} navigation = {this.props.navigation} refresh = {this.props.navigation.getParam('refresh')}/>
+               <Pedido pedido={this.state.pedido} navigation = {this.props.navigation} refresh = {this.props.refreshFunction} refreshPedido = {this.props.refreshPedido}/>
            </View>
           )
         }

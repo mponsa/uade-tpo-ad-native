@@ -4,9 +4,27 @@ import {ListItem} from 'react-native-elements';
 import {PulseLoader, TextLoader} from 'react-native-indicator';
 import { FlatList } from 'react-native-gesture-handler';
 import Api from '../api/Api.js'
+<<<<<<< HEAD
 import axios from 'axios';
 import { tsImportEqualsDeclaration } from '@babel/types';
+=======
+import {createStackNavigator, createBottomTabNavigator} from 'react-navigation';
+import PedidosScreen from '../screens/PedidosScreen';
+import PedidoScreen from '../screens/PedidoScreen';
+import RubrosScreen from '../screens/RubrosScreen';
+import SubRubrosScreen from '../screens/SubRubrosScreen';
+import ProductosScreen from '../screens/ProductosScreen';
+import ProductoScreen from '../screens/ProductoScreen';
+>>>>>>> 5bf72d7c693f2f0f775d0a25466544626a8324a8
 
+
+const ClientesStack = createStackNavigator({
+  PedidosCliente: PedidosScreen,
+  Pedido: PedidoScreen,
+  Rubro: RubrosScreen,
+  SRubro: SubRubrosScreen,
+  Productos: ProductosScreen,
+});
 
 class ClientesScreen extends Component{
     constructor(props){
@@ -14,10 +32,11 @@ class ClientesScreen extends Component{
       this.state = {
           error : null,
           isLoaded : false,
-          clientes : [], 
+          clientes : [],
       };
-    } 
+    }
 
+<<<<<<< HEAD
     cargarClientes = async () => {
         // fetch(Api.path + '/clientes')
         // .then( response => response.json())
@@ -46,6 +65,21 @@ class ClientesScreen extends Component{
         catch(e) {
             alert(e);
         }
+=======
+    cargarClientes(){
+        fetch(Api.path + '/clientes')
+        .then( response => response.json())
+        .then(
+            // Handle the result
+            (result) => {
+                this.setState({
+                    isLoaded : true,
+                    clientes : result.result
+                });
+            },
+
+        )
+>>>>>>> 5bf72d7c693f2f0f775d0a25466544626a8324a8
       }
 
       componentDidMount(){
@@ -60,20 +94,20 @@ class ClientesScreen extends Component{
             backgroundColor: '#FFF',
           },
           loading: {
-            flex: 1, 
+            flex: 1,
             alignItems: 'center',
-            justifyContent: 'center', 
+            justifyContent: 'center',
           }
         });
 
         return(
-            !this.state.isLoaded 
+            !this.state.isLoaded
             ?<View style={styles.loading}>
-              <PulseLoader /> 
+              <PulseLoader />
               <TextLoader text="Loading" />
             </View>
             :<ScrollView style={styles.container}>
-              <FlatList 
+              <FlatList
                 data={this.state.clientes}
                 renderItem={({ item }) => (
                   <ListItem
@@ -82,10 +116,10 @@ class ClientesScreen extends Component{
                     subtitle={item.cuil}
                     leftAvatar={{ source: require('../assets/images/avatar.png') }}
                     button onPress={() => this.props.navigation.navigate('PedidosCliente', {cliente: item})}
-                  /> 
+                  />
                 )}
                 keyExtractor={item => item.cuil}
-              /> 
+              />
              </ScrollView>
             )
           }

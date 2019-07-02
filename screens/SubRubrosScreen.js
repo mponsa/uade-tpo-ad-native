@@ -12,11 +12,15 @@ class SubRubrosScreen extends Component{
     super(props);
     this.state = {
       isLoaded: false,
-      subrubros: []
+      subrubros: [],
+      addItem : this.props.navigation.getParam('addItem'),
+      pedido: this.props.navigation.getParam('pedido'),
+      refreshPedido: this.props.navigation.getParam('refreshPedido')
     };
-  }  
+  }
 
 
+<<<<<<< HEAD
    cargarSubRubros = async () => {
     
     try{
@@ -24,6 +28,39 @@ class SubRubrosScreen extends Component{
       .then((response) => {
         if (response.data.errorCode  === 0){
             var filter = this.props.navigation.getParam('descRubro',null);
+=======
+   cargarSubRubros(){
+
+    // try{
+    //   await axios.get(Api.path + '/subrubros')
+    //   .then(response => response.json()).then((response) => {
+    //     if (response.data.errorCode  === 0){
+    //         var filter = this.props.navigation.getParam('descRubro',null);
+    //         var filteredsubrubros = result.result.filter(function(subrubro){
+    //           return !subrubro.rubro.descripcion.indexOf(filter)
+    //         });
+    //         this.setState({
+    //             isLoaded : true,
+    //             subrubros : filteredsubrubros
+    //         });
+    //     }
+    //     else{
+    //       alert(response.data.clientMessage)
+    //     }
+    //   })
+    // }catch(e){
+    //   alert(e.clientMessage)
+    // }
+
+
+
+    fetch(Api.path + '/subrubros')
+    .then( response => response.json())
+    .then(
+        // Handle the result
+        (result) => {
+            var filter = this.props.navigation.getParam('rubro',null).descripcion;
+>>>>>>> 5bf72d7c693f2f0f775d0a25466544626a8324a8
             var filteredsubrubros = result.result.filter(function(subrubro){
               return !subrubro.rubro.descripcion.indexOf(filter)
             });
@@ -72,30 +109,30 @@ class SubRubrosScreen extends Component{
         backgroundColor: '#FFF',
       },
       loading: {
-        flex: 1, 
+        flex: 1,
         alignItems: 'center',
-        justifyContent: 'center', 
+        justifyContent: 'center',
         },
     });
 
     return(
-            !this.state.isLoaded 
+            !this.state.isLoaded
             ?<View style={styles.loading}>
-              <PulseLoader /> 
+              <PulseLoader />
               <TextLoader text="Loading" />
             </View>
             :<ScrollView style={styles.container}>
-              <FlatList 
+              <FlatList
                 data={this.state.subrubros}
                 renderItem={({ item }) => (
                   <ListItem
                     roundAvatar
                     title={item.codigo + ' - ' + item.descripcion}
-                    button onPress={() => this.props.navigation.navigate('Productos', {subRubro: item, rubro: item.rubro})}
-                  /> 
+                    button onPress={() => this.props.navigation.navigate('Productos', {subRubro: item, rubro: item.rubro, addItem: this.state.addItem, pedido: this.state.pedido, refreshPedido: this.state.refreshPedido})}
+                  />
                 )}
                 keyExtractor={item => item.codigo.toString()}
-              /> 
+              />
              </ScrollView>
     )
   }
@@ -106,5 +143,3 @@ export default SubRubrosScreen;
 SubRubrosScreen.navigationOptions = {
   title: 'Seleccione un sub-rubro..',
 };
-
-

@@ -12,9 +12,12 @@ class RubrosScreen extends Component{
     super(props);
     this.state = {
       isLoaded:false,
-      rubros: []
+      rubros: [],
+      addItem : this.props.navigation.getParam('addItem'),
+      pedido:  this.props.navigation.getParam('pedido'),
+      refreshPedido:  this.props.navigation.getParam('refreshPedido'),
     };
-  }  
+  }
 
 
   cargarRubros = () => {
@@ -27,9 +30,9 @@ class RubrosScreen extends Component{
               alert(response.data.clientMessage)
           }
       })
-  }catch(e){
-      alert(e.message)
-  }
+    }catch(e){
+        alert(e.message)
+    }
   }
 
   componentDidMount = () => {
@@ -44,31 +47,32 @@ class RubrosScreen extends Component{
         backgroundColor: '#FFF',
       },
       loading: {
-        flex: 1, 
+        flex: 1,
         alignItems: 'center',
-        justifyContent: 'center', 
+        justifyContent: 'center',
       }
     });
 
     return(
-            !this.state.isLoaded 
+            !this.state.isLoaded
             ?<View style={styles.loading}>
-              <PulseLoader /> 
+              <PulseLoader />
               <TextLoader text="Loading" />
             </View>
             :<ScrollView style={styles.container}>
-              <FlatList 
+              <FlatList
                 data={this.state.rubros}
                 renderItem={({ item }) => (
                   <ListItem
                     roundAvatar
                     title={item.codigo + ' - ' + item.descripcion}
-                    button onPress={() => this.props.navigation.navigate('SRubro', {rubro: item})}
+                    button onPress={() => this.props.navigation.navigate('SRubro', {rubro: item, addItem: this.state.addItem, pedido: this.state.pedido, refreshPedido: this.state.refreshPedido})}
+
                     //button onPress={() => alert(item.numero)}
-                  /> 
+                  />
                 )}
                 keyExtractor={item => item.codigo.toString()}
-              /> 
+              />
              </ScrollView>
     )
   }
@@ -79,5 +83,3 @@ export default RubrosScreen;
 RubrosScreen.navigationOptions = {
   title: 'Seleccione un rubro..',
 };
-
-

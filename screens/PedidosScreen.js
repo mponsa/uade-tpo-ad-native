@@ -19,7 +19,7 @@ class PedidosScreen extends Component{
     };
     this.refreshFunction = this.refreshFunction.bind(this);
     this.crearPedido = this.crearPedido.bind(this);
-  }
+  } 
 
   cargarPedidos(){
     axios.post(Api.path + '/pedidos/cliente',{'numero': this.state.cliente.numero})

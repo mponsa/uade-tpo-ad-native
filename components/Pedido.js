@@ -26,6 +26,7 @@ class Pedido extends Component {
             addItem: false
           };
         this.eliminarPedido = this.eliminarPedido.bind(this);
+        this.addItems = this.addItems.bind(this);
     }
 
 

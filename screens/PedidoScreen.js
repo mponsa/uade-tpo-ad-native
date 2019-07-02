@@ -69,7 +69,7 @@ class PedidoScreen extends Component{
            </View>
           :
            <View style={styles.container}>
-               <Pedido pedido={this.state.pedido} navigation = {this.props.navigation} refresh = {this.props.refreshFunction} refreshPedido = {this.props.refreshPedido}/>
+               <Pedido pedido={this.state.pedido} navigation = {this.props.navigation} refresh = {this.props.navigation.getParam('refresh')} refreshPedido = {this.props.refreshPedido}/>
            </View>
           )
         }

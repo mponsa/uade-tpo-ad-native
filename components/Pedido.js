@@ -82,7 +82,7 @@ class Pedido extends Component {
                             <ListItem
                                 roundAvatar
                                 title={item.producto.nombre + ' x' + item.cantidad}
-                                subtitle={'$' - (item.producto.precio * item.cantidad).toString()}
+                                subtitle={'$ -'+    (item.producto.precio * item.cantidad).toString()}
                             />
                         )}
                         keyExtractor={item => item.producto.identificador.toString()}

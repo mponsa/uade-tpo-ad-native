@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { StyleSheet,View,} from 'react-native';
+import { StyleSheet,View,ScrollView} from 'react-native';
 import {PulseLoader, TextLoader} from 'react-native-indicator';
 import axios from 'axios';
 import Api from '../api/Api.js'
@@ -68,9 +68,9 @@ class PedidoScreen extends Component{
             <TextLoader text="Loading" />
            </View>
           :
-           <View style={styles.container}>
+           <ScrollView style={styles.container}>
                <Pedido pedido={this.state.pedido} navigation = {this.props.navigation} refresh = {this.props.navigation.getParam('refresh')} refreshPedido = {this.props.refreshPedido}/>
-           </View>
+           </ScrollView>
           )
         }
 

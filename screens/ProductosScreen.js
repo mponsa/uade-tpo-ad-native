@@ -24,7 +24,7 @@ class ProductosScreen extends Component{
     this.refreshFunction = this.refreshFunction.bind(this);
   }
 
-  async cargarProductos(){
+  /*async cargarProductos(){
     try{
         await axios.post(Api.path + '/productosSubRubro',{
             codigo: this.props.navigation.getParam('subRubro',null).codigo
@@ -40,8 +40,31 @@ class ProductosScreen extends Component{
         alert(e.message)
     }
 
+  }*/
+  cargarProductos = async () => {
+    fetch(Api.path + '/productosSubRubro',{
+      method: 'post',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      //make sure to serialize your JSON body
+      body: JSON.stringify({
+        codigo: this.props.navigation.getParam('subRubro',null).codigo
+      }
+      )}
+    )
+    .then( response => response.json())
+    .then(
+        // Handle the result
+        (result) => {
+            this.setState({
+                isLoaded : true,
+                productos : result.result
+            });
+        }, 
+      )
   }
-
   refreshFunction(){
       this.setState({isLoaded:false})
       this.cargarProductos();

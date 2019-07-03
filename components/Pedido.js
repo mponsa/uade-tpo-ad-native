@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput, TouchableOpacity,AsyncStorage, Alert, Button ,StyleSheet ,StatusBar} from 'react-native';
+import { View, Text, TextInput, TouchableOpacity,StyleSheet ,StatusBar} from 'react-native';
 import Api from '../api/Api.js';
 import axios from 'axios';
 import {ListItem} from 'react-native-elements';
-import { ScrollView, FlatList } from 'react-native-gesture-handler';
-import PedidosScreen from '../screens/PedidosScreen.js';
+import { FlatList } from 'react-native-gesture-handler';
+
 
 
 class Pedido extends Component {

@@ -16,6 +16,7 @@ import ProductoScreen from '../screens/ProductoScreen';
 import PedidoScreen from '../screens/PedidoScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import ChangePasswordScreen from '../screens/ChangePasswordScreen';
+import CantidadScreen from '../screens/CantidadScreen';
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -59,6 +60,7 @@ const ClientesStack = createStackNavigator({
   Rubro: RubrosScreen,
   SRubro: SubRubrosScreen,
   Productos: ProductosScreen,
+  Cantidad: CantidadScreen,
 });
 
 ClientesStack.navigationOptions = {

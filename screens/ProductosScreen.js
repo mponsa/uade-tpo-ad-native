@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { View, ScrollView, StyleSheet,TouchableOpacity, Text} from 'react-native';
+import { View, ScrollView, StyleSheet,TouchableOpacity, Text,Modal} from 'react-native';
 import {ListItem} from 'react-native-elements';
 import axios from 'axios';
 import { FlatList } from 'react-native-gesture-handler';
@@ -76,30 +76,14 @@ class ProductosScreen extends Component{
 
   onPressItem(item) {
     this.state.addItem ?
-      this.setState({ promptVisible: true })
+      this.props.navigation.navigate('Cantidad',{producto: item, pedido: this.state.pedido, refreshPedido: this.state.refreshPedido})
     : this.props.navigation.navigate('Producto', {producto: item, refresh: this.refreshFunction});
   }
 
   onSubmit(value){
           this.setState({ promptVisible: false, cantidad: value });
 
-          try{
-            axios.post(Api.path + '/agregarProductos',{
-              'id' : this.state.pedido.numeroPedido,
-              'productoId' : this.state.producto,
-              'cantidad' : this.state.cantidad
-            }).then(response => {
-                if(response.data.errorCode === 0){
-                  this.state.refreshPedido();
-                  this.props.navigation.navigate('Pedido',{ pedido: this.state.pedido });
-                }else{
-                  alert(response.data.clientMessage)
-                }
-            })
 
-          }catch(e){
-            alert(e.message)
-          }
   }
 
 
@@ -155,15 +139,6 @@ class ProductosScreen extends Component{
                 )}
                 keyExtractor={item => item.codigoBarras.toString()}
         />
-
-        {/*<Prompt
-           title="Cantidad"
-           placeholder=""
-           defaultValue="1"
-           visible={this.state.promptVisible}
-           onCancel={() => this.setState( {promptVisible: false} )}
-           onSubmit={this.onSubmit(value)}
-        />*/}
 
         <TouchableOpacity onPress={() => this.props.navigation.navigate('Producto',{rubro : this.props.navigation.getParam('rubro',null),
                                                                           subRubro : this.props.navigation.getParam('subRubro',null),

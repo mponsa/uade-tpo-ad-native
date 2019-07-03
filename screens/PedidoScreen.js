@@ -19,7 +19,7 @@ class PedidoScreen extends Component{
 
     async actualizarPedido(){
       try{
-        await axios.get(Api.path + `/pedido?numero=${this.props.match.params.id}`).then(response =>{
+        await axios.get(Api.path + `/pedido?numero=${this.state.pedido.numeroPedido}`).then(response =>{
             if(response.data.errorCode === 0){
                 this.setState({pedido : response.data.result,
                                isLoaded: true})
@@ -69,7 +69,7 @@ class PedidoScreen extends Component{
            </View>
           :
            <ScrollView style={styles.container}>
-               <Pedido pedido={this.state.pedido} navigation = {this.props.navigation} refresh = {this.props.navigation.getParam('refresh')} refreshPedido = {this.props.refreshPedido}/>
+               <Pedido pedido={this.state.pedido} navigation = {this.props.navigation} refresh = {this.props.navigation.getParam('refresh')} refreshPedido = {this.refreshPedido}/>
            </ScrollView>
           )
         }
